@@ -35,6 +35,7 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+//  TODO: Now anyone can sign up as admin
 exports.signup = catchAsync(async (req, res) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -124,7 +125,7 @@ exports.forgotPassword = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   //   console.log(user);
   if (!user) {
-    return next(new AppError('There is no error with given email', 404));
+    return next(new AppError('There is no user with given email', 404));
   }
 
   // generate random reset token
@@ -162,6 +163,7 @@ exports.forgotPassword = async (req, res, next) => {
     );
   }
 };
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // get user based on token
   const hashedToken = crypto
