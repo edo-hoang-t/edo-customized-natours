@@ -4,7 +4,7 @@ include _reviewCard
 block append head
     script(src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js')
     link(href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css', rel='stylesheet')
-
+    //- we cannot intuitively put <stripe> script here, since it need to be available the first time the page load, for top-level code to execute, not the same as the case for 'mapbox' (no top-level code)
     //- script(src='/js/mapbox.js')
 
 mixin overviewBox(label, text, icon)
@@ -88,4 +88,8 @@ block content
             .cta__content
                 h2.heading-secondary What are you waiting for?
                 p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
-                button.btn.btn--green.span-all-rows Book tour now!
+
+                if user
+                    button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+                else
+                    a.btn.btn--green.span-all-rows(href='/login') Log in to book tour!
